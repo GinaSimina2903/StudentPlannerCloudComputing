@@ -1,12 +1,15 @@
-# Documentatie 
-Nume: Gheorghiță Gina Simina
-Grupa 1146 SIMPRE
+# Documentatie
+
+Nume: Gheorghiță Gina Simina  
+Grupa: 1146 SIMPRE
 
 # Student Planner
 
 Student Planner este o aplicație web destinată gestionării activităților academice ale unui student. Aplicația permite utilizatorilor să își creeze un cont, să se autentifice și să gestioneze activități precum teme, examene, proiecte sau task-uri personale. Scopul aplicației este de a oferi o soluție simplă și accesibilă pentru organizarea activităților unui student, folosind servicii cloud moderne.
 
 Proiectul utilizează servicii cloud pentru autentificare, stocarea datelor, încărcarea fișierelor, trimiterea reminderelor prin email și publicarea aplicației online.
+
+---
 
 ## Funcționalități
 
@@ -26,14 +29,14 @@ Aplicația include următoarele funcționalități:
 - atașarea unui fișier pentru o activitate;
 - trimiterea unui reminder prin email.
 
-Categoriile disponibile pentru activități sunt:
+Categoriile disponibile pentru activități:
 
 - Temă;
 - Examen;
 - Proiect;
 - Personal.
 
-Prioritățile disponibile sunt:
+Prioritățile disponibile:
 
 - Scăzută;
 - Medie;
@@ -55,7 +58,7 @@ Proiectul a fost dezvoltat folosind următoarele tehnologii:
 
 ---
 
-## Servicii cloud utilizate + Descriere API 
+## Servicii cloud utilizate + Descriere API
 
 Aplicația integrează mai multe servicii cloud:
 
@@ -74,22 +77,27 @@ Exemplu logic de request:
 POST /accounts:signUp
 
 Request:
+```json
 {
   "email": "student@example.com",
   "password": "parola123",
   "returnSecureToken": true
 }
+```
 
 Response:
+```json
 {
   "localId": "user_id",
   "email": "student@example.com",
   "idToken": "token_autentificare"
 }
+```
 
 ### 2. Firebase Firestore
 
 Firebase Firestore este utilizat ca bază de date cloud. În această bază de date sunt salvate activitățile create de utilizatori. Fiecare activitate este asociată cu utilizatorul autentificat prin câmpul `userId`.
+
 Metode echivalente utilizate:
 - POST / CREATE pentru adăugarea unei activități;
 - GET / READ pentru citirea activităților;
@@ -97,7 +105,7 @@ Metode echivalente utilizate:
 - DELETE pentru ștergerea unei activități.
 
 Exemplu document salvat în Firestore:
-
+```json
 {
   "title": "Proiect Cloud Computing",
   "description": "Finalizare documentație și video",
@@ -108,41 +116,33 @@ Exemplu document salvat în Firestore:
   "userId": "id_utilizator",
   "createdAt": "data_crearii"
 }
-
+```
 
 ### 3. Cloudinary
 
 Cloudinary este utilizat pentru încărcarea și stocarea fișierelor atașate activităților. După încărcarea unui fișier, aplicația salvează în Firestore informații precum numele fișierului, linkul către fișier și identificatorul acestuia.
-Metodă HTTP:
-POST
 
-Endpoint folosit:
-https://api.cloudinary.com/v1_1/{cloud_name}/upload
+Metodă HTTP: POST  
+Endpoint folosit: `https://api.cloudinary.com/v1_1/{cloud_name}/upload`
 
 Request:
 - file: fișierul selectat de utilizator;
 - upload_preset: presetul configurat în Cloudinary.
 
 Response:
+```json
 {
   "secure_url": "https://res.cloudinary.com/...",
   "public_id": "id_fisier",
   "original_filename": "nume_fisier"
 }
+```
 
-Linkul fișierului este apoi salvat în Firestore în câmpul attachmentUrl.
+Linkul fișierului este apoi salvat în Firestore în câmpul `attachmentUrl`.
 
 ### 4. EmailJS
 
 EmailJS este utilizat pentru trimiterea reminderelor prin email. Utilizatorul poate trimite un email de reminder pentru o activitate, pe baza informațiilor salvate în aplicație.
-
-Metodă HTTP:
-POST
-
-Date transmise:
-{
-  "to_email": "student@example.com",
-  "title": "Proiect Cloud Computing",
   "deadline": "2026-05-08",
   "category": "Proiect",
   "priority": "Ridicată",
