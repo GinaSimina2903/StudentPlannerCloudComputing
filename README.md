@@ -3,9 +3,11 @@
 Nume: Gheorghiță Gina Simina  
 Grupa: 1146 SIMPRE
 
-Aplicație live: https://student-planner-cloud-computing.vercel.app/
-Repository Github: https://github.com/GinaSimina2903/StudentPlannerCloudComputing.git
-Link videoclip: https://youtu.be/d-8RKukPZys
+## Linkuri utile
+
+- Aplicație live: https://student-planner-cloud-computing.vercel.app/  
+- Repository GitHub: https://github.com/GinaSimina2903/StudentPlannerCloudComputing.git  
+- Videoclip demo: https://youtu.be/d-8RKukPZys
 
 # Student Planner
 
