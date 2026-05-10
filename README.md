@@ -3,6 +3,10 @@
 Nume: Gheorghiță Gina Simina  
 Grupa: 1146 SIMPRE
 
+Aplicație live: https://student-planner-cloud-computing.vercel.app/
+Repository Github: https://github.com/GinaSimina2903/StudentPlannerCloudComputing.git
+Link videoclip: https://youtu.be/d-8RKukPZys
+
 # Student Planner
 
 Student Planner este o aplicație web destinată gestionării activităților academice ale unui student. Aplicația permite utilizatorilor să își creeze un cont, să se autentifice și să gestioneze activități precum teme, examene, proiecte sau task-uri personale. Scopul aplicației este de a oferi o soluție simplă și accesibilă pentru organizarea activităților unui student, folosind servicii cloud moderne.
@@ -143,17 +147,28 @@ Linkul fișierului este apoi salvat în Firestore în câmpul `attachmentUrl`.
 ### 4. EmailJS
 
 EmailJS este utilizat pentru trimiterea reminderelor prin email. Utilizatorul poate trimite un email de reminder pentru o activitate, pe baza informațiilor salvate în aplicație.
+
+Metodă HTTP: POST
+
+Date transmise:
+```json
+{
+  "to_email": "student@example.com",
+  "title": "Proiect Cloud Computing",
   "deadline": "2026-05-08",
   "category": "Proiect",
   "priority": "Ridicată",
   "message": "Reminder pentru activitate"
 }
+```
 
 Response:
+```json
 {
   "status": 200,
   "text": "OK"
 }
+```
 
 ### 5. Vercel
 
@@ -203,46 +218,54 @@ Câmpul `userId` este important deoarece permite separarea datelor între utiliz
 
 Fluxul principal al aplicației este următorul:
 
-1. Utilizatorul își creează un cont sau se autentifică.
-![Pagina autentificare](screenshots/auth.png)
-![Creare cont nou](screenshots/signup.png)
-2. Firebase Authentication validează datele de autentificare.
-![Creare cont nou](screenshots/FirebaseAuthentification.png)
-3. După autentificare, utilizatorul este redirecționat către dashboard.
-![Dashboard](screenshots/dashboard.png)
+1. Utilizatorul își creează un cont sau se autentifică.  
+   ![Pagina autentificare](screenshots/auth.png)  
+   ![Creare cont nou](screenshots/signup.png)
+
+2. Firebase Authentication validează datele de autentificare.  
+   ![Creare cont nou](screenshots/FirebaseAuthentification.png)
+
+3. După autentificare, utilizatorul este redirecționat către dashboard.  
+   ![Dashboard](screenshots/dashboard.png)
+
 4. În dashboard, utilizatorul poate gestiona activitățile personale.
-5. Activitățile create sunt salvate în Firebase Firestore.
-![Adaugare Activitate noua](screenshots/add.png)
-![Activitate creata](screenshots/added.png)
+
+5. Activitățile create sunt salvate în Firebase Firestore.  
+   ![Adaugare Activitate noua](screenshots/add.png)  
+   ![Activitate creata](screenshots/added.png)
+
 6. Fiecare activitate este asociată cu utilizatorul autentificat prin `userId`.
-7. Utilizatorul poate adăuga, edita, șterge, filtra sau marca activitățile ca finalizate.
-![Activitate finalizata](screenshots/markedasdone.png)
-![Modificarea unui task](screenshots/editing.png)
-![Filtrari](screenshots/filtering.png)
-8. Pentru o activitate se poate încărca un fișier atașat prin Cloudinary.
-![Se poate atasa fisier](screenshots/addingfiles.png)
-9. Utilizatorul poate trimite un reminder prin email folosind EmailJS.
-![Se poate trimite reminder](screenshots/sendreminder.png)
+
+7. Utilizatorul poate adăuga, edita, șterge, filtra sau marca activitățile ca finalizate.  
+   ![Activitate finalizata](screenshots/markedasdone.png)  
+   ![Modificarea unui task](screenshots/editing.png)  
+   ![Filtrari](screenshots/filtering.png)
+
+8. Pentru o activitate se poate încărca un fișier atașat prin Cloudinary.  
+   ![Se poate atasa fisier](screenshots/addingfiles.png)
+
+9. Utilizatorul poate trimite un reminder prin email folosind EmailJS.  
+   ![Se poate trimite reminder](screenshots/sendreminder.png)
+
 10. Sesiunea utilizatorului rămâne activă după refresh datorită mecanismului de persistență oferit de Firebase Authentication.
 
 ### Metode HTTP utilizate
 
-| Serviciu | Operație | Metodă HTTP |
-|---|---|---|
-| Firebase Authentication | Register/Login | POST |
-| Firestore | Citire activități | GET / READ |
-| Firestore | Adăugare activitate | POST / CREATE |
-| Firestore | Editare activitate | PATCH / UPDATE |
-| Firestore | Ștergere activitate | DELETE |
-| Cloudinary | Upload fișier | POST |
-| EmailJS | Trimitere email | POST |
+| Serviciu                | Operație              | Metodă HTTP  |
+|-------------------------|-----------------------|--------------|
+| Firebase Authentication | Register/Login        | POST         |
+| Firestore               | Citire activități     | GET / READ   |
+| Firestore               | Adăugare activitate   | POST / CREATE|
+| Firestore               | Editare activitate    | PATCH / UPDATE|
+| Firestore               | Ștergere activitate   | DELETE       |
+| Cloudinary              | Upload fișier         | POST         |
+| EmailJS                 | Trimitere email       | POST         |
 
 ---
 
-
 ## Configurare locală
 
-Pentru rularea locală a proiectului este necesară instalarea dependențelor.
+Pentru rularea locală a proiectului este necesară instalarea dependențelor:
 
 ```bash
 npm install
@@ -278,13 +301,13 @@ npm run dev
 
 ## Configurare Firebase
 
-Pentru utilizarea Firebase, au fost parcurși următorii pași:
+Pași realizați pentru configurarea Firebase:
 
-1. Crearea unui proiect în Firebase Console.
-2. Înregistrarea aplicației web în cadrul proiectului Firebase.
-3. Activarea serviciului Firebase Authentication.
-4. Activarea metodei de autentificare Email/Password.
-5. Activarea bazei de date Firestore.
+1. Crearea unui proiect în Firebase Console.  
+2. Înregistrarea aplicației web în cadrul proiectului Firebase.  
+3. Activarea serviciului Firebase Authentication.  
+4. Activarea metodei de autentificare Email/Password.  
+5. Activarea bazei de date Firestore.  
 6. Copierea configurației Firebase în fișierul `.env`.
 
 Firebase Authentication este folosit pentru login și register, iar Firestore este folosit pentru stocarea activităților.
@@ -295,7 +318,7 @@ Firebase Authentication este folosit pentru login și register, iar Firestore es
 
 Pentru protejarea datelor, accesul la documentele din colecția `tasks` este permis doar utilizatorului autentificat care deține activitatea respectivă.
 
-Regulile folosite în Firestore sunt:
+Regulile folosite în Firestore:
 
 ```txt
 rules_version = '2';
@@ -325,15 +348,15 @@ Aceste reguli permit:
 
 Cloudinary este utilizat pentru încărcarea fișierelor atașate unei activități.
 
-Pașii de configurare sunt:
+Pașii de configurare:
 
-1. Crearea unui cont Cloudinary.
-2. Copierea valorii `Cloud name` din dashboard.
-3. Crearea unui upload preset.
-4. Setarea upload preset-ului ca `Unsigned`.
+1. Crearea unui cont Cloudinary.  
+2. Copierea valorii `Cloud name` din dashboard.  
+3. Crearea unui upload preset.  
+4. Setarea upload preset-ului ca `Unsigned`.  
 5. Salvarea valorilor în fișierul `.env`.
 
-Variabilele utilizate pentru Cloudinary sunt:
+Variabilele utilizate pentru Cloudinary:
 
 ```env
 VITE_CLOUDINARY_CLOUD_NAME=
@@ -346,15 +369,15 @@ VITE_CLOUDINARY_UPLOAD_PRESET=
 
 EmailJS este utilizat pentru trimiterea reminderelor prin email.
 
-Pașii de configurare sunt:
+Pașii de configurare:
 
-1. Crearea unui cont EmailJS.
-2. Crearea unui Email Service.
-3. Crearea unui template de email.
-4. Definirea variabilelor folosite în template.
+1. Crearea unui cont EmailJS.  
+2. Crearea unui Email Service.  
+3. Crearea unui template de email.  
+4. Definirea variabilelor folosite în template.  
 5. Copierea valorilor Service ID, Template ID și Public Key în fișierul `.env`.
 
-Variabilele utilizate pentru EmailJS sunt:
+Variabilele utilizate pentru EmailJS:
 
 ```env
 VITE_EMAILJS_SERVICE_ID=
@@ -379,14 +402,14 @@ message
 
 Aplicația este publicată folosind Vercel.
 
-Pașii generali pentru deploy sunt:
+Pașii generali pentru deploy:
 
-1. Codul sursă este încărcat într-un repository GitHub.
-2. Repository-ul este importat în Vercel.
-3. Variabilele de mediu sunt configurate în secțiunea Environment Variables din Vercel.
+1. Codul sursă este încărcat într-un repository GitHub.  
+2. Repository-ul este importat în Vercel.  
+3. Variabilele de mediu sunt configurate în secțiunea Environment Variables din Vercel.  
 4. Aplicația este construită și publicată automat.
 
-În Vercel trebuie adăugate aceleași variabile de mediu folosite local:
+Variabilele de mediu necesare în Vercel (aceleași ca local):
 
 ```env
 VITE_FIREBASE_API_KEY=
