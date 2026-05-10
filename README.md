@@ -1,10 +1,12 @@
+# Documentatie 
+Nume: Gheorghiță Gina Simina
+Grupa 1146 SIMPRE
+
 # Student Planner
 
-Student Planner este o aplicație web destinată gestionării activităților academice ale unui student. Aplicația permite utilizatorilor să își creeze un cont, să se autentifice și să gestioneze activități precum teme, examene, proiecte sau task-uri personale.
+Student Planner este o aplicație web destinată gestionării activităților academice ale unui student. Aplicația permite utilizatorilor să își creeze un cont, să se autentifice și să gestioneze activități precum teme, examene, proiecte sau task-uri personale. Scopul aplicației este de a oferi o soluție simplă și accesibilă pentru organizarea activităților unui student, folosind servicii cloud moderne.
 
 Proiectul utilizează servicii cloud pentru autentificare, stocarea datelor, încărcarea fișierelor, trimiterea reminderelor prin email și publicarea aplicației online.
-
----
 
 ## Funcționalități
 
@@ -53,7 +55,7 @@ Proiectul a fost dezvoltat folosind următoarele tehnologii:
 
 ---
 
-## Servicii cloud utilizate
+## Servicii cloud utilizate + Descriere API 
 
 Aplicația integrează mai multe servicii cloud:
 
@@ -61,17 +63,97 @@ Aplicația integrează mai multe servicii cloud:
 
 Firebase Authentication este utilizat pentru înregistrarea și autentificarea utilizatorilor. Acest serviciu permite utilizatorilor să își creeze cont folosind email și parolă, să se autentifice și să rămână logați după refresh.
 
+Operații utilizate:
+- creare cont utilizator;
+- autentificare utilizator;
+- menținerea sesiunii după refresh;
+- logout.
+
+Exemplu logic de request:
+
+POST /accounts:signUp
+
+Request:
+{
+  "email": "student@example.com",
+  "password": "parola123",
+  "returnSecureToken": true
+}
+
+Response:
+{
+  "localId": "user_id",
+  "email": "student@example.com",
+  "idToken": "token_autentificare"
+}
+
 ### 2. Firebase Firestore
 
 Firebase Firestore este utilizat ca bază de date cloud. În această bază de date sunt salvate activitățile create de utilizatori. Fiecare activitate este asociată cu utilizatorul autentificat prin câmpul `userId`.
+Metode echivalente utilizate:
+- POST / CREATE pentru adăugarea unei activități;
+- GET / READ pentru citirea activităților;
+- PATCH / UPDATE pentru editarea unei activități;
+- DELETE pentru ștergerea unei activități.
+
+Exemplu document salvat în Firestore:
+
+{
+  "title": "Proiect Cloud Computing",
+  "description": "Finalizare documentație și video",
+  "category": "Proiect",
+  "deadline": "2026-05-08",
+  "priority": "Ridicată",
+  "completed": false,
+  "userId": "id_utilizator",
+  "createdAt": "data_crearii"
+}
+
 
 ### 3. Cloudinary
 
 Cloudinary este utilizat pentru încărcarea și stocarea fișierelor atașate activităților. După încărcarea unui fișier, aplicația salvează în Firestore informații precum numele fișierului, linkul către fișier și identificatorul acestuia.
+Metodă HTTP:
+POST
+
+Endpoint folosit:
+https://api.cloudinary.com/v1_1/{cloud_name}/upload
+
+Request:
+- file: fișierul selectat de utilizator;
+- upload_preset: presetul configurat în Cloudinary.
+
+Response:
+{
+  "secure_url": "https://res.cloudinary.com/...",
+  "public_id": "id_fisier",
+  "original_filename": "nume_fisier"
+}
+
+Linkul fișierului este apoi salvat în Firestore în câmpul attachmentUrl.
 
 ### 4. EmailJS
 
 EmailJS este utilizat pentru trimiterea reminderelor prin email. Utilizatorul poate trimite un email de reminder pentru o activitate, pe baza informațiilor salvate în aplicație.
+
+Metodă HTTP:
+POST
+
+Date transmise:
+{
+  "to_email": "student@example.com",
+  "title": "Proiect Cloud Computing",
+  "deadline": "2026-05-08",
+  "category": "Proiect",
+  "priority": "Ridicată",
+  "message": "Reminder pentru activitate"
+}
+
+Response:
+{
+  "status": 200,
+  "text": "OK"
+}
 
 ### 5. Vercel
 
@@ -122,17 +204,41 @@ Câmpul `userId` este important deoarece permite separarea datelor între utiliz
 Fluxul principal al aplicației este următorul:
 
 1. Utilizatorul își creează un cont sau se autentifică.
+![Pagina autentificare](screenshots/auth.png)
+![Creare cont nou](screenshots/signup.png)
 2. Firebase Authentication validează datele de autentificare.
+![Creare cont nou](screenshots/FirebaseAuthentification.png)
 3. După autentificare, utilizatorul este redirecționat către dashboard.
+![Dashboard](screenshots/dashboard.png)
 4. În dashboard, utilizatorul poate gestiona activitățile personale.
 5. Activitățile create sunt salvate în Firebase Firestore.
+![Adaugare Activitate noua](screenshots/add.png)
+![Activitate creata](screenshots/added.png)
 6. Fiecare activitate este asociată cu utilizatorul autentificat prin `userId`.
 7. Utilizatorul poate adăuga, edita, șterge, filtra sau marca activitățile ca finalizate.
+![Activitate finalizata](screenshots/markedasdone.png)
+![Modificarea unui task](screenshots/editing.png)
+![Filtrari](screenshots/filtering.png)
 8. Pentru o activitate se poate încărca un fișier atașat prin Cloudinary.
+![Se poate atasa fisier](screenshots/addingfiles.png)
 9. Utilizatorul poate trimite un reminder prin email folosind EmailJS.
+![Se poate trimite reminder](screenshots/sendreminder.png)
 10. Sesiunea utilizatorului rămâne activă după refresh datorită mecanismului de persistență oferit de Firebase Authentication.
 
+### Metode HTTP utilizate
+
+| Serviciu | Operație | Metodă HTTP |
+|---|---|---|
+| Firebase Authentication | Register/Login | POST |
+| Firestore | Citire activități | GET / READ |
+| Firestore | Adăugare activitate | POST / CREATE |
+| Firestore | Editare activitate | PATCH / UPDATE |
+| Firestore | Ștergere activitate | DELETE |
+| Cloudinary | Upload fișier | POST |
+| EmailJS | Trimitere email | POST |
+
 ---
+
 
 ## Configurare locală
 
@@ -302,16 +408,18 @@ VITE_EMAILJS_PUBLIC_KEY=
 
 ## Linkuri proiect
 
+Documentație:
+
 Repository GitHub:
 
 ```txt
-link repository GitHub
+https://github.com/GinaSimina2903/StudentPlannerCloudComputing.git
 ```
 
 Aplicație live:
 
 ```txt
-link aplicație Vercel
+https://student-planner-cloud-computing.vercel.app/
 ```
 
 ---
